@@ -25,8 +25,8 @@ constraints.
 
 **How to Run:**
 
-$ make
-$ ./gol
-$ echo $?
+	$ make
+	$ ./gol
+	$ echo $?
 
 This outputs 0 if all tests have passed, 1 otherwise.
