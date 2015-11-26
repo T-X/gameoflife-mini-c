@@ -11,8 +11,9 @@ A Game of Life implementation written in C with extra language constrains
 * No 'if', 'else', 'elseif', 'switch' etc.
 * No 'while', 'for', 'foreach' etc.
 * No '&&', '||', '!'
-* No guards
 * No 'goto'
+* No '?'-Operator
+* No guards (not available in C anyway)
 * No external API
 
 **Note:**
