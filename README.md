@@ -21,4 +21,4 @@ A Game of Life implementation written in C with extra language constraints
 This Game-Of-Life implementation so far is totally incomplete, of course!
 However the way loops and checks are performed in the test functions
 should give a hint on how Turing completeness still holds with these
-constrains.
+constraints.
