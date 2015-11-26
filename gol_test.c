@@ -113,7 +113,6 @@ static int test_expected_states(cell_state_trans_t *trans)
 	   we can perform arithmetic operations with these! */
 	long maybe_apply_err_offset = func_err - func_ok;
 
-
 	cell_state_t res = cell_next_state(trans->num_neigh, trans->old);
 	maybe_apply_err_offset *= (res & FLIP_BIT(trans->new)) | (FLIP_BIT(res) & trans->new);
 
