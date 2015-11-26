@@ -99,7 +99,13 @@ static int func_ok(cell_state_trans_t *trans)
 }
 
 /**
- * test_expected_states - check whether 
+ * test_expected_states - test the pending variations for cell_next_state()
+ * @trans: The current cell state transition to test
+ *
+ * Note: 'trans' needs to be a pointer in an array which ends with a
+ * __FIN_STATE_TRANS_TABLE.
+ *
+ * Return: 0 on success, 1 otherwise.
  */
 static int test_expected_states(cell_state_trans_t *trans)
 {
@@ -119,7 +125,7 @@ static int test_expected_states(cell_state_trans_t *trans)
  *
  * Tests the given cell_next_state function for all the combinations
  * legal in a two dimensional Game-Of-Life. That is for all combinations
- * initial dead and alive cells and 0 to 8 neighbors.
+ * of initially dead and alive cells and 0 to 8 neighbors.
  *
  * Return: 0 on success, 1 otherwise.
  */
