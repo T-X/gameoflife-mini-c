@@ -1,12 +1,12 @@
 # gameoflife-mini-c
-A Game of Life implementation written in C with extra language constrains
+A Game of Life implementation written in C with extra language constraints
 
 **Goals:**
 
 * Experimenting how much C syntax could be thrown overboard while still having a Turing complete language :).
 * Exploring the power of C pointers :D
 
-**Constrains:**
+**Constraints:**
 
 * No 'if', 'else', 'elseif', 'switch' etc.
 * No 'while', 'for', 'foreach' etc.
