@@ -22,3 +22,11 @@ This Game-Of-Life implementation so far is totally incomplete, of course!
 However the way loops and checks are performed in the test functions
 should give a hint on how Turing completeness still holds with these
 constraints.
+
+**How to Run:**
+
+$ make
+$ ./gol
+$ echo $?
+
+This outputs 0 if all tests have passed, 1 otherwise.
