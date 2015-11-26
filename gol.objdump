@@ -1,0 +1,387 @@
+# gcc (Debian 4.6.3-14+rpi1) 4.6.3
+
+$ make CFLAGS="-O0 -g"
+$ objdump -d -S gol
+----
+
+gol:     file format elf32-littlearm
+
+
+Disassembly of section .init:
+
+000082a0 <_init>:
+    82a0:	e92d4008 	push	{r3, lr}
+    82a4:	eb00001d 	bl	8320 <call_gmon_start>
+    82a8:	e8bd8008 	pop	{r3, pc}
+
+Disassembly of section .plt:
+
+000082ac <__libc_start_main@plt-0x14>:
+    82ac:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    82b0:	e59fe004 	ldr	lr, [pc, #4]	; 82bc <_init+0x1c>
+    82b4:	e08fe00e 	add	lr, pc, lr
+    82b8:	e5bef008 	ldr	pc, [lr, #8]!
+    82bc:	00008478 	.word	0x00008478
+
+000082c0 <__libc_start_main@plt>:
+    82c0:	e28fc600 	add	ip, pc, #0, 12
+    82c4:	e28cca08 	add	ip, ip, #8, 20	; 0x8000
+    82c8:	e5bcf478 	ldr	pc, [ip, #1144]!	; 0x478
+
+000082cc <__gmon_start__@plt>:
+    82cc:	e28fc600 	add	ip, pc, #0, 12
+    82d0:	e28cca08 	add	ip, ip, #8, 20	; 0x8000
+    82d4:	e5bcf470 	ldr	pc, [ip, #1136]!	; 0x470
+
+000082d8 <abort@plt>:
+    82d8:	e28fc600 	add	ip, pc, #0, 12
+    82dc:	e28cca08 	add	ip, ip, #8, 20	; 0x8000
+    82e0:	e5bcf468 	ldr	pc, [ip, #1128]!	; 0x468
+
+Disassembly of section .text:
+
+000082e4 <_start>:
+    82e4:	e3a0b000 	mov	fp, #0
+    82e8:	e3a0e000 	mov	lr, #0
+    82ec:	e49d1004 	pop	{r1}		; (ldr r1, [sp], #4)
+    82f0:	e1a0200d 	mov	r2, sp
+    82f4:	e52d2004 	push	{r2}		; (str r2, [sp, #-4]!)
+    82f8:	e52d0004 	push	{r0}		; (str r0, [sp, #-4]!)
+    82fc:	e59fc010 	ldr	ip, [pc, #16]	; 8314 <_start+0x30>
+    8300:	e52dc004 	push	{ip}		; (str ip, [sp, #-4]!)
+    8304:	e59f000c 	ldr	r0, [pc, #12]	; 8318 <_start+0x34>
+    8308:	e59f300c 	ldr	r3, [pc, #12]	; 831c <_start+0x38>
+    830c:	ebffffeb 	bl	82c0 <__libc_start_main@plt>
+    8310:	ebfffff0 	bl	82d8 <abort@plt>
+    8314:	0000861c 	.word	0x0000861c
+    8318:	000083f4 	.word	0x000083f4
+    831c:	000085bc 	.word	0x000085bc
+
+00008320 <call_gmon_start>:
+    8320:	e59f3014 	ldr	r3, [pc, #20]	; 833c <call_gmon_start+0x1c>
+    8324:	e59f2014 	ldr	r2, [pc, #20]	; 8340 <call_gmon_start+0x20>
+    8328:	e08f3003 	add	r3, pc, r3
+    832c:	e7933002 	ldr	r3, [r3, r2]
+    8330:	e3530000 	cmp	r3, #0
+    8334:	012fff1e 	bxeq	lr
+    8338:	eaffffe3 	b	82cc <__gmon_start__@plt>
+    833c:	00008404 	.word	0x00008404
+    8340:	00000018 	.word	0x00000018
+
+00008344 <__do_global_dtors_aux>:
+    8344:	e59f3010 	ldr	r3, [pc, #16]	; 835c <__do_global_dtors_aux+0x18>
+    8348:	e5d32000 	ldrb	r2, [r3]
+    834c:	e3520000 	cmp	r2, #0
+    8350:	03a02001 	moveq	r2, #1
+    8354:	05c32000 	strbeq	r2, [r3]
+    8358:	e12fff1e 	bx	lr
+    835c:	0001083c 	.word	0x0001083c
+
+00008360 <frame_dummy>:
+    8360:	e59f0020 	ldr	r0, [pc, #32]	; 8388 <frame_dummy+0x28>
+    8364:	e92d4008 	push	{r3, lr}
+    8368:	e5903000 	ldr	r3, [r0]
+    836c:	e3530000 	cmp	r3, #0
+    8370:	08bd8008 	popeq	{r3, pc}
+    8374:	e59f3010 	ldr	r3, [pc, #16]	; 838c <frame_dummy+0x2c>
+    8378:	e3530000 	cmp	r3, #0
+    837c:	08bd8008 	popeq	{r3, pc}
+    8380:	e12fff33 	blx	r3
+    8384:	e8bd8008 	pop	{r3, pc}
+    8388:	00010640 	.word	0x00010640
+    838c:	00000000 	.word	0x00000000
+
+00008390 <cell_next_state>:
+ * - Given alive cell: Dies if less than 2 or more than 3 neighbors
+ *
+ * Return: The new state of a cell (e.g. DEAD or ALIVE)
+ */
+cell_state_t cell_next_state(int num_neigh, cell_state_t state)
+{
+    8390:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+    8394:	e28db000 	add	fp, sp, #0
+    8398:	e24dd00c 	sub	sp, sp, #12
+    839c:	e50b0008 	str	r0, [fp, #-8]
+    83a0:	e50b100c 	str	r1, [fp, #-12]
+	return	(GET_BIT(num_neigh, 0) | state) &
+    83a4:	e51b3008 	ldr	r3, [fp, #-8]
+    83a8:	e2032001 	and	r2, r3, #1
+    83ac:	e51b300c 	ldr	r3, [fp, #-12]
+    83b0:	e1822003 	orr	r2, r2, r3
+		GET_BIT(num_neigh, 1) &
+    83b4:	e51b3008 	ldr	r3, [fp, #-8]
+    83b8:	e1a030c3 	asr	r3, r3, #1
+ *
+ * Return: The new state of a cell (e.g. DEAD or ALIVE)
+ */
+cell_state_t cell_next_state(int num_neigh, cell_state_t state)
+{
+	return	(GET_BIT(num_neigh, 0) | state) &
+    83bc:	e0022003 	and	r2, r2, r3
+		GET_BIT(num_neigh, 1) &
+		FLIP_BIT(GET_BIT(num_neigh, 2)) &
+    83c0:	e51b3008 	ldr	r3, [fp, #-8]
+    83c4:	e1a03143 	asr	r3, r3, #2
+ * Return: The new state of a cell (e.g. DEAD or ALIVE)
+ */
+cell_state_t cell_next_state(int num_neigh, cell_state_t state)
+{
+	return	(GET_BIT(num_neigh, 0) | state) &
+		GET_BIT(num_neigh, 1) &
+    83c8:	e2833001 	add	r3, r3, #1
+    83cc:	e0022003 	and	r2, r2, r3
+		FLIP_BIT(GET_BIT(num_neigh, 2)) &
+		FLIP_BIT(GET_BIT(num_neigh, 3));
+    83d0:	e51b3008 	ldr	r3, [fp, #-8]
+    83d4:	e1a031c3 	asr	r3, r3, #3
+ */
+cell_state_t cell_next_state(int num_neigh, cell_state_t state)
+{
+	return	(GET_BIT(num_neigh, 0) | state) &
+		GET_BIT(num_neigh, 1) &
+		FLIP_BIT(GET_BIT(num_neigh, 2)) &
+    83d8:	e2833001 	add	r3, r3, #1
+    83dc:	e0023003 	and	r3, r2, r3
+ *
+ * Return: The new state of a cell (e.g. DEAD or ALIVE)
+ */
+cell_state_t cell_next_state(int num_neigh, cell_state_t state)
+{
+	return	(GET_BIT(num_neigh, 0) | state) &
+    83e0:	e2033001 	and	r3, r3, #1
+		GET_BIT(num_neigh, 1) &
+		FLIP_BIT(GET_BIT(num_neigh, 2)) &
+		FLIP_BIT(GET_BIT(num_neigh, 3));
+}
+    83e4:	e1a00003 	mov	r0, r3
+    83e8:	e28bd000 	add	sp, fp, #0
+    83ec:	e8bd0800 	ldmfd	sp!, {fp}
+    83f0:	e12fff1e 	bx	lr
+
+000083f4 <main>:
+
+int main()
+{
+    83f4:	e92d4800 	push	{fp, lr}
+    83f8:	e28db004 	add	fp, sp, #4
+	return test_cell_next_state();
+    83fc:	eb000066 	bl	859c <test_cell_next_state>
+    8400:	e1a03000 	mov	r3, r0
+}
+    8404:	e1a00003 	mov	r0, r3
+    8408:	e8bd8800 	pop	{fp, pc}
+
+0000840c <trans_is_last>:
+ * @trans: the cell state transition to check
+ *
+ * Return: 1 if there are no follow-up states to test, 0 otherwise.
+ */
+static int trans_is_last(cell_state_trans_t *trans)
+{
+    840c:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+    8410:	e28db000 	add	fp, sp, #0
+    8414:	e24dd00c 	sub	sp, sp, #12
+    8418:	e50b0008 	str	r0, [fp, #-8]
+	return GET_BIT((trans + 1)->num_neigh, __FIN_BIT);
+    841c:	e51b3008 	ldr	r3, [fp, #-8]
+    8420:	e283300c 	add	r3, r3, #12
+    8424:	e5933004 	ldr	r3, [r3, #4]
+    8428:	e1a03243 	asr	r3, r3, #4
+    842c:	e2033001 	and	r3, r3, #1
+
+}
+    8430:	e1a00003 	mov	r0, r3
+    8434:	e28bd000 	add	sp, fp, #0
+    8438:	e8bd0800 	ldmfd	sp!, {fp}
+    843c:	e12fff1e 	bx	lr
+
+00008440 <func_fin>:
+ * @trans: unused
+ *
+ * Return: Always 0
+ */
+static int func_fin(cell_state_trans_t *trans)
+{
+    8440:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+    8444:	e28db000 	add	fp, sp, #0
+    8448:	e24dd00c 	sub	sp, sp, #12
+    844c:	e50b0008 	str	r0, [fp, #-8]
+	return 0;
+    8450:	e3a03000 	mov	r3, #0
+}
+    8454:	e1a00003 	mov	r0, r3
+    8458:	e28bd000 	add	sp, fp, #0
+    845c:	e8bd0800 	ldmfd	sp!, {fp}
+    8460:	e12fff1e 	bx	lr
+
+00008464 <func_err>:
+ * @trans: unused
+ *
+ * Return: Always 1
+ */
+static int func_err(cell_state_trans_t *trans)
+{
+    8464:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+    8468:	e28db000 	add	fp, sp, #0
+    846c:	e24dd00c 	sub	sp, sp, #12
+    8470:	e50b0008 	str	r0, [fp, #-8]
+	return 1;
+    8474:	e3a03001 	mov	r3, #1
+}
+    8478:	e1a00003 	mov	r0, r3
+    847c:	e28bd000 	add	sp, fp, #0
+    8480:	e8bd0800 	ldmfd	sp!, {fp}
+    8484:	e12fff1e 	bx	lr
+
+00008488 <func_ok>:
+ * transition matrix.
+ *
+ * Return: 0 if all state transitions were successfully tested, 1 otherwise.
+ */
+static int func_ok(cell_state_trans_t *trans)
+{
+    8488:	e92d4800 	push	{fp, lr}
+    848c:	e28db004 	add	fp, sp, #4
+    8490:	e24dd010 	sub	sp, sp, #16
+    8494:	e50b0010 	str	r0, [fp, #-16]
+	long maybe_apply_fin_offset = func_fin - test_expected_states;
+    8498:	e59f204c 	ldr	r2, [pc, #76]	; 84ec <func_ok+0x64>
+    849c:	e59f304c 	ldr	r3, [pc, #76]	; 84f0 <func_ok+0x68>
+    84a0:	e0633002 	rsb	r3, r3, r2
+    84a4:	e50b3008 	str	r3, [fp, #-8]
+
+	maybe_apply_fin_offset *= trans_is_last(trans);
+    84a8:	e51b0010 	ldr	r0, [fp, #-16]
+    84ac:	ebffffd6 	bl	840c <trans_is_last>
+    84b0:	e1a02000 	mov	r2, r0
+    84b4:	e51b3008 	ldr	r3, [fp, #-8]
+    84b8:	e0030392 	mul	r3, r2, r3
+    84bc:	e50b3008 	str	r3, [fp, #-8]
+	return (*(test_expected_states + maybe_apply_fin_offset))(trans + 1);
+    84c0:	e51b2008 	ldr	r2, [fp, #-8]
+    84c4:	e59f3024 	ldr	r3, [pc, #36]	; 84f0 <func_ok+0x68>
+    84c8:	e0823003 	add	r3, r2, r3
+    84cc:	e51b2010 	ldr	r2, [fp, #-16]
+    84d0:	e282200c 	add	r2, r2, #12
+    84d4:	e1a00002 	mov	r0, r2
+    84d8:	e12fff33 	blx	r3
+    84dc:	e1a03000 	mov	r3, r0
+}
+    84e0:	e1a00003 	mov	r0, r3
+    84e4:	e24bd004 	sub	sp, fp, #4
+    84e8:	e8bd8800 	pop	{fp, pc}
+    84ec:	00008440 	.word	0x00008440
+    84f0:	000084f4 	.word	0x000084f4
+
+000084f4 <test_expected_states>:
+
+/**
+ * test_expected_states - check whether 
+ */
+static int test_expected_states(cell_state_trans_t *trans)
+{
+    84f4:	e92d4800 	push	{fp, lr}
+    84f8:	e28db004 	add	fp, sp, #4
+    84fc:	e24dd010 	sub	sp, sp, #16
+    8500:	e50b0010 	str	r0, [fp, #-16]
+	/* functions have addresses, addresses are numbers -
+	   we can perform arithmetic operations with these! */
+	long maybe_apply_err_offset = func_err - func_ok;
+    8504:	e59f2088 	ldr	r2, [pc, #136]	; 8594 <test_expected_states+0xa0>
+    8508:	e59f3088 	ldr	r3, [pc, #136]	; 8598 <test_expected_states+0xa4>
+    850c:	e0633002 	rsb	r3, r3, r2
+    8510:	e50b3008 	str	r3, [fp, #-8]
+
+
+	cell_state_t res = cell_next_state(trans->num_neigh, trans->old);
+    8514:	e51b3010 	ldr	r3, [fp, #-16]
+    8518:	e5932004 	ldr	r2, [r3, #4]
+    851c:	e51b3010 	ldr	r3, [fp, #-16]
+    8520:	e5933000 	ldr	r3, [r3]
+    8524:	e1a00002 	mov	r0, r2
+    8528:	e1a01003 	mov	r1, r3
+    852c:	ebffff97 	bl	8390 <cell_next_state>
+    8530:	e50b000c 	str	r0, [fp, #-12]
+	maybe_apply_err_offset *= (res & FLIP_BIT(trans->new)) | (FLIP_BIT(res) & trans->new);
+    8534:	e51b3010 	ldr	r3, [fp, #-16]
+    8538:	e5933008 	ldr	r3, [r3, #8]
+    853c:	e2832001 	add	r2, r3, #1
+    8540:	e51b300c 	ldr	r3, [fp, #-12]
+    8544:	e0022003 	and	r2, r2, r3
+    8548:	e51b300c 	ldr	r3, [fp, #-12]
+    854c:	e2831001 	add	r1, r3, #1
+    8550:	e51b3010 	ldr	r3, [fp, #-16]
+    8554:	e5933008 	ldr	r3, [r3, #8]
+    8558:	e0013003 	and	r3, r1, r3
+    855c:	e1823003 	orr	r3, r2, r3
+    8560:	e2033001 	and	r3, r3, #1
+    8564:	e51b2008 	ldr	r2, [fp, #-8]
+    8568:	e0030392 	mul	r3, r2, r3
+    856c:	e50b3008 	str	r3, [fp, #-8]
+
+	return (*(func_ok + maybe_apply_err_offset))(trans);
+    8570:	e51b2008 	ldr	r2, [fp, #-8]
+    8574:	e59f301c 	ldr	r3, [pc, #28]	; 8598 <test_expected_states+0xa4>
+    8578:	e0823003 	add	r3, r2, r3
+    857c:	e51b0010 	ldr	r0, [fp, #-16]
+    8580:	e12fff33 	blx	r3
+    8584:	e1a03000 	mov	r3, r0
+}
+    8588:	e1a00003 	mov	r0, r3
+    858c:	e24bd004 	sub	sp, fp, #4
+    8590:	e8bd8800 	pop	{fp, pc}
+    8594:	00008464 	.word	0x00008464
+    8598:	00008488 	.word	0x00008488
+
+0000859c <test_cell_next_state>:
+ * initial dead and alive cells and 0 to 8 neighbors.
+ *
+ * Return: 0 on success, 1 otherwise.
+ */
+int test_cell_next_state()
+{
+    859c:	e92d4800 	push	{fp, lr}
+    85a0:	e28db004 	add	fp, sp, #4
+	return test_expected_states(&test_cell_state_table[0]);
+    85a4:	e59f000c 	ldr	r0, [pc, #12]	; 85b8 <test_cell_next_state+0x1c>
+    85a8:	ebffffd1 	bl	84f4 <test_expected_states>
+    85ac:	e1a03000 	mov	r3, r0
+}
+    85b0:	e1a00003 	mov	r0, r3
+    85b4:	e8bd8800 	pop	{fp, pc}
+    85b8:	00010758 	.word	0x00010758
+
+000085bc <__libc_csu_init>:
+    85bc:	e92d45f8 	push	{r3, r4, r5, r6, r7, r8, sl, lr}
+    85c0:	e1a06000 	mov	r6, r0
+    85c4:	e59f5048 	ldr	r5, [pc, #72]	; 8614 <__libc_csu_init+0x58>
+    85c8:	e59fa048 	ldr	sl, [pc, #72]	; 8618 <__libc_csu_init+0x5c>
+    85cc:	e08f5005 	add	r5, pc, r5
+    85d0:	e08fa00a 	add	sl, pc, sl
+    85d4:	e065a00a 	rsb	sl, r5, sl
+    85d8:	e1a07001 	mov	r7, r1
+    85dc:	e1a08002 	mov	r8, r2
+    85e0:	ebffff2e 	bl	82a0 <_init>
+    85e4:	e1b0a14a 	asrs	sl, sl, #2
+    85e8:	08bd85f8 	popeq	{r3, r4, r5, r6, r7, r8, sl, pc}
+    85ec:	e3a04000 	mov	r4, #0
+    85f0:	e4953004 	ldr	r3, [r5], #4
+    85f4:	e1a00006 	mov	r0, r6
+    85f8:	e1a01007 	mov	r1, r7
+    85fc:	e1a02008 	mov	r2, r8
+    8600:	e2844001 	add	r4, r4, #1
+    8604:	e12fff33 	blx	r3
+    8608:	e154000a 	cmp	r4, sl
+    860c:	1afffff7 	bne	85f0 <__libc_csu_init+0x34>
+    8610:	e8bd85f8 	pop	{r3, r4, r5, r6, r7, r8, sl, pc}
+    8614:	00008064 	.word	0x00008064
+    8618:	00008064 	.word	0x00008064
+
+0000861c <__libc_csu_fini>:
+    861c:	e12fff1e 	bx	lr
+
+Disassembly of section .fini:
+
+00008620 <_fini>:
+    8620:	e92d4008 	push	{r3, lr}
+    8624:	e8bd8008 	pop	{r3, pc}
